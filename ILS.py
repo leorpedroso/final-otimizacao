@@ -1,13 +1,15 @@
-import os
-import re
-import random
 import copy
+import os
+import random
+import re
+import sys
 import time
 
-filepath_rm = os.path.join(
-    'C:\\Users\\Bruno\\Desktop\\UFRGS\\Semestre5\\otimizacao\\final-otimizacao\\instances', 'RM12')
+# filepath_rm = os.path.join(
+#     'C:\\Users\\Bruno\\Desktop\\UFRGS\\Semestre5\\otimizacao\\final-otimizacao\\instances', 'RM12')
 # filepath_ans = os.path.join('/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/Julia','answer_12.txt')
-# filepath_rm = os.path.join('/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/rm','jcole.txt')
+# filepath_rm = os.path.join('/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/rm','RM01')
+filepath_rm = '/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/rm'
 
 
 chars = "x[](),\n"
@@ -46,9 +48,11 @@ class State:
         return self
 
 
-def open_rm():
+def open_rm(file):
+    filepath = os.path.join(filepath_rm, file)
+
     edges = []
-    with open(filepath_rm) as f:
+    with open(filepath) as f:
         line = f.readline()
         line = f.readline()
         line = f.readline()
@@ -67,16 +71,15 @@ def open_rm():
     return edges
 
 
-def generate_initial_state():
+def generate_initial_state(file):
+    filepath = os.path.join(filepath_rm, file)
     random.seed(10)
     sol = []
-    rm = open_rm()
+    rm = open_rm(filepath)
     chosen_vertices = []
     chosen_types = []
 
-    # print(len(rm))
-
-    r = random.randint(0, 2500)
+    r = random.randint(0, 2)
     for i in range(r):
         r2 = random.randint(0, len(rm))
         rand_edge = rm[r2]
@@ -93,7 +96,6 @@ def generate_initial_state():
 
 
 def busca_local(current_state, rm):
-    #print('busca local')
     new_state = current_state.generate_neighbor()
     better = True
     best_value = new_state.value
@@ -123,7 +125,6 @@ def perturbation(current_state, level, rm):
     new_state = State(current_state.sol, [], current_state.vertices,
                       current_state.types, current_state.value)
 
-    print(f'perturbation: {level}')
     for i in range(level):
         r = random.randint(0, new_state.value-1)
         removed_edge = new_state.sol.pop(r)
@@ -139,27 +140,34 @@ def perturbation(current_state, level, rm):
     return new_state
 
 
-def ils(rm):
-    initial_state = generate_initial_state()
+def ils(rm, file):
+    initial_state = generate_initial_state(file)
     state = busca_local(initial_state, rm)
-    print(state.value)
     best_state = copy.deepcopy(state)
     iterations = 5000
     level = 1
-    while(iterations != 0):
-        start = time.time()
-        iterations -= 1
-        state = perturbation(state, level, rm)
-        print(time.time() - start, " segundos")
-        state = busca_local(state, rm)
-        print(state.value)
+    
+    timeout = time.time() + 60*30
 
+    while(iterations != 0):
+        iterations -= 1
+        start_pert = time.time()
+        state = perturbation(best_state, level, rm)
+        print(f'iteration {iterations}')
+        print(time.time() - start_pert, " segundos")
+        state = busca_local(state, rm)
+        print(len(state.sol))
+        if len(state.sol) >= 2440:
+            print(len(rm))
+            print(test_answer(rm, state.sol))
         if state.value > best_state.value:
             best_state = state
             level = 1
         else:
-            level += 1
-
+            if level < best_state.value-1:
+                level += 1
+        if time.time() > timeout:
+            break
     return best_state
 
 
@@ -181,13 +189,16 @@ def test_answer(rm, ans):
     return True
 
 
-rm = open_rm()
-s = ils(rm)
+if __name__ == '__main__':
+    rm = open_rm(sys.argv[1])
+    s = ils(rm, sys.argv[1])
 
-print(s.sol)
-print(s.value)
-print(test_answer(rm, s.sol))
+    # print(s.sol)
+    print(s.value)
+    print(test_answer(rm, s.sol))
 
-
-# for a in range(1000):
-#   print(rm[a])
+    with open("answers_ils.txt", "a") as f:
+        f.write('*'*12)
+        f.write(sys.argv[1] + '\n')
+        f.write(str(s.value) + '\n')
+        f.write(str(test_answer(rm, s.sol)) + '\n')
