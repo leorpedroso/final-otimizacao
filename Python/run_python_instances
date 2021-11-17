@@ -1,12 +1,113 @@
-python3 ILS.py RM01
-python3 ILS.py RM02
-python3 ILS.py RM03
-python3 ILS.py RM04
-python3 ILS.py RM05
-python3 ILS.py RM06
-python3 ILS.py RM07
-python3 ILS.py RM08
-python3 ILS.py RM09
-python3 ILS.py RM10
-python3 ILS.py RM11
-python3 ILS.py RM12
+# Intervalo random
+python3 ILS.py results/random/random_2500_10 10 2500 1 RM01
+python3 ILS.py results/random/random_2500_69 69 2500 1 RM01
+python3 ILS.py results/random/random_2500_100 100 2500 1 RM01
+python3 ILS.py results/random/random_2500_1337 1337 2500 1 RM01
+python3 ILS.py results/random/random_2500_80085 80085 2500 1 RM01
+
+python3 ILS.py results/random/random_1_10 10 1 1 RM01
+python3 ILS.py results/random/random_1_69 69 1 1 RM01
+python3 ILS.py results/random/random_1_100 100 1 1 RM01
+python3 ILS.py results/random/random_1_1337 1337 1 1 RM01
+python3 ILS.py results/random/random_1_80085 80085 1 1 RM01
+
+python3 ILS.py results/random/random_1250_10 10 1250 1 RM01
+python3 ILS.py results/random/random_1250_69 69 1250 1 RM01
+python3 ILS.py results/random/random_1250_100 100 1250 1 RM01
+python3 ILS.py results/random/random_1250_1337 1337 1250 1 RM01
+python3 ILS.py results/random/random_1250_80085 80085 1250 1 RM01
+
+#Step de nivel perturbacao
+python3 ILS.py results/step/step_1_10 10 2500 1 RM01
+python3 ILS.py results/step/step_1_69 69 2500 1 RM01
+python3 ILS.py results/step/step_1_100 100 2500 1 RM01
+python3 ILS.py results/step/step_1_1337 1337 2500 1 RM01
+python3 ILS.py results/step/step_1_80085 80085 2500 1 RM01
+
+python3 ILS.py results/step/step_10_10 10 2500 10 RM01
+python3 ILS.py results/step/step_10_69 69 2500 10 RM01
+python3 ILS.py results/step/step_10_100 100 2500 10 RM01
+python3 ILS.py results/step/step_10_1337 1337 2500 10 RM01
+python3 ILS.py results/step/step_10_80085 80085 2500 10 RM01
+
+python3 ILS.py results/step/step_100_10 10 2500 50 RM01
+python3 ILS.py results/step/step_100_69 69 2500 50 RM01
+python3 ILS.py results/step/step_100_100 100 2500 50 RM01
+python3 ILS.py results/step/step_100_1337 1337 2500 50 RM01
+python3 ILS.py results/step/step_100_80085 80085 2500 50 RM01
+
+
+#RMs
+
+python3 ILS.py results/instances/rm01_10 10 2500 1 RM01
+python3 ILS.py results/instances/rm01_69 69 2500 1 RM01
+python3 ILS.py results/instances/rm01_100 100 2500 1 RM01
+python3 ILS.py results/instances/rm01_1337 1337 2500 1 RM01
+python3 ILS.py results/instances/rm01_80085 80085 2500 1 RM01
+
+python3 ILS.py results/instances/rm02_10 10 2500 1 RM02
+python3 ILS.py results/instances/rm02_69 69 2500 1 RM02
+python3 ILS.py results/instances/rm02_100 100 2500 1 RM02
+python3 ILS.py results/instances/rm02_1337 1337 2500 1 RM02
+python3 ILS.py results/instances/rm02_80085 80085 2500 1 RM02
+
+python3 ILS.py results/instances/rm03_10 10 2500 1 RM03
+python3 ILS.py results/instances/rm03_69 69 2500 1 RM03
+python3 ILS.py results/instances/rm03_100 100 2500 1 RM03
+python3 ILS.py results/instances/rm03_1337 1337 2500 1 RM03
+python3 ILS.py results/instances/rm03_80085 80085 2500 1 RM03
+
+python3 ILS.py results/instances/rm04_10 10 2500 1 RM04
+python3 ILS.py results/instances/rm04_69 69 2500 1 RM04
+python3 ILS.py results/instances/rm04_100 100 2500 1 RM04
+python3 ILS.py results/instances/rm04_1337 1337 2500 1 RM04
+python3 ILS.py results/instances/rm04_80085 80085 2500 1 RM04
+
+python3 ILS.py results/instances/rm05_10 10 2500 1 RM05
+python3 ILS.py results/instances/rm05_69 69 2500 1 RM05
+python3 ILS.py results/instances/rm05_100 100 2500 1 RM05
+python3 ILS.py results/instances/rm05_1337 1337 2500 1 RM05
+python3 ILS.py results/instances/rm05_80085 80085 2500 1 RM05
+
+python3 ILS.py results/instances/rm06_10 10 2500 1 RM06
+python3 ILS.py results/instances/rm06_69 69 2500 1 RM06
+python3 ILS.py results/instances/rm06_100 100 2500 1 RM06
+python3 ILS.py results/instances/rm06_1337 1337 2500 1 RM06
+python3 ILS.py results/instances/rm06_80085 80085 2500 1 RM06
+
+python3 ILS.py results/instances/rm07_10 10 2500 1 RM07
+python3 ILS.py results/instances/rm07_69 69 2500 1 RM07
+python3 ILS.py results/instances/rm07_100 100 2500 1 RM07
+python3 ILS.py results/instances/rm07_1337 1337 2500 1 RM07
+python3 ILS.py results/instances/rm07_80085 80085 2500 1 RM07
+
+python3 ILS.py results/instances/rm08_10 10 2500 1 RM08
+python3 ILS.py results/instances/rm08_69 69 2500 1 RM08
+python3 ILS.py results/instances/rm08_100 100 2500 1 RM08
+python3 ILS.py results/instances/rm08_1337 1337 2500 1 RM08
+python3 ILS.py results/instances/rm08_80085 80085 2500 1 RM08
+
+python3 ILS.py results/instances/rm09_10 10 2500 1 RM09
+python3 ILS.py results/instances/rm09_69 69 2500 1 RM09
+python3 ILS.py results/instances/rm09_100 100 2500 1 RM09
+python3 ILS.py results/instances/rm09_1337 1337 2500 1 RM09
+python3 ILS.py results/instances/rm09_80085 80085 2500 1 RM09
+
+python3 ILS.py results/instances/rm10_10 10 2500 1 RM10
+python3 ILS.py results/instances/rm10_69 69 2500 1 RM10
+python3 ILS.py results/instances/rm10_100 100 2500 1 RM10
+python3 ILS.py results/instances/rm10_1337 1337 2500 1 RM10
+python3 ILS.py results/instances/rm10_80085 80085 2500 1 RM10
+
+python3 ILS.py results/instances/rm11_10 10 2500 1 RM11
+python3 ILS.py results/instances/rm11_69 69 2500 1 RM11
+python3 ILS.py results/instances/rm11_100 100 2500 1 RM11
+python3 ILS.py results/instances/rm11_1337 1337 2500 1 RM11
+python3 ILS.py results/instances/rm11_80085 80085 2500 1 RM11
+
+python3 ILS.py results/instances/rm12_10 10 2500 1 RM12
+python3 ILS.py results/instances/rm12_69 69 2500 1 RM12
+python3 ILS.py results/instances/rm12_100 100 2500 1 RM12
+python3 ILS.py results/instances/rm12_1337 1337 2500 1 RM12
+python3 ILS.py results/instances/rm12_80085 80085 2500 1 RM12
+

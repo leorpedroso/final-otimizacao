@@ -5,18 +5,21 @@ import re
 import sys
 import time
 
-# filepath_rm = os.path.join(
-#     'C:\\Users\\Bruno\\Desktop\\UFRGS\\Semestre5\\otimizacao\\final-otimizacao\\instances', 'RM12')
-# filepath_ans = os.path.join('/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/Julia','answer_12.txt')
-# filepath_rm = os.path.join('/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/rm','RM01')
-filepath_rm = '/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/rm'
-
+# filepath_rm = '/home/leo/Documents/2021_1/Otimizacao/Trabalho/final-otimizacao/rm'
 
 chars = "x[](),\n"
+sol_inicial = 0
 
 
 class State:
     def __init__(self, sol, remaining_edges, vertices, types, value=None):
+        """
+        sol -> current solution
+        remaining_edges -> edges that have not been added to the solution
+        vertices -> vertices touched by the edges in the solution
+        types -> types of edges in the solution
+        value -> the number of edges in the solution
+        """
         self.sol = sol
         self.remaining_edges = remaining_edges
         self.vertices = vertices
@@ -24,7 +27,8 @@ class State:
         self.value = len(sol)
 
     def generate_neighbor(self):
-
+        """ Returns a random neighbor of the given State. If no edges can be added
+            without making it invalid, then returns the given State"""
         size = len(self.remaining_edges)
 
         while(size > 0):
@@ -46,8 +50,9 @@ class State:
 
 
 def open_rm(file):
-    filepath = os.path.join(filepath_rm, file)
-
+    """ Reads an instance from the given file """
+    # filepath = os.path.join(filepath_rm, file)
+    filepath = file
     edges = []
     with open(filepath) as f:
         line = f.readline()
@@ -69,7 +74,10 @@ def open_rm(file):
 
 
 def generate_initial_state(file, max_rand):
-    filepath = os.path.join(filepath_rm, file)
+    """ Generates the initial state by reading from the given file.
+        Up to max_rand random edges will be added to the initial state """
+    # filepath = os.path.join(filepath_rm, file)
+    filepath = file
     sol = []
     rm = open_rm(filepath)
     chosen_vertices = []
@@ -78,6 +86,7 @@ def generate_initial_state(file, max_rand):
     r = random.randint(0, int(max_rand))
     for _ in range(r):
         r2 = random.randint(0, len(rm))
+
         rand_edge = rm[r2]
         if rand_edge[0] not in chosen_vertices:
             if rand_edge[1] not in chosen_vertices:
@@ -92,6 +101,7 @@ def generate_initial_state(file, max_rand):
 
 
 def local_search(current_state):
+    """ Execute local search until we don't find a better neighbor"""
     new_state = current_state.generate_neighbor()
     better = True
     best_value = new_state.value
@@ -106,7 +116,8 @@ def local_search(current_state):
 
 
 def test_edge(current_state, candidate_edge):
-
+    """ Checks if candidate_edge can be added to the solution
+        without making it invalid """
     if candidate_edge[0] in current_state.vertices or candidate_edge[1] in current_state.vertices:
         return False
 
@@ -117,17 +128,19 @@ def test_edge(current_state, candidate_edge):
 
 
 def shake(current_state, level, rm):
-
+    """ Shakes the current state by removing level random edges
+        from it """
     new_state = State(current_state.sol, [], current_state.vertices,
                       current_state.types, current_state.value)
 
     for i in range(level):
-        r = random.randint(0, new_state.value-1)
-        removed_edge = new_state.sol.pop(r)
-        new_state.vertices.remove(removed_edge[0])
-        new_state.vertices.remove(removed_edge[1])
-        new_state.types.remove(removed_edge[2])
-        new_state.value -= 1
+        if new_state.value > 1:
+            r = random.randint(0, new_state.value-1)            
+            removed_edge = new_state.sol.pop(r)
+            new_state.vertices.remove(removed_edge[0])
+            new_state.vertices.remove(removed_edge[1])
+            new_state.types.remove(removed_edge[2])
+            new_state.value -= 1
 
     for i in range(len(rm)):
         if(test_edge(new_state, rm[i])):
@@ -138,25 +151,28 @@ def shake(current_state, level, rm):
 
 def ils(rm, file, arguments):
     initial_state = generate_initial_state(file, arguments[0])
+
     state = local_search(initial_state)
     best_state = copy.deepcopy(state)
     iterations = 5000
     level = 1
     step = int(arguments[1])
     
-    timeout = time.time() + 60*2
+    # Execution time used is 10 minutes
+    timeout = time.time() + 10
 
     while(iterations != 0):
         iterations -= 1
         start_pert = time.time()
         state = shake(best_state, level, rm)
         print(f'iteration {iterations}')
-        print(time.time() - start_pert, " segundos")
         state = local_search(state)
+        print(time.time() - start_pert, " segundos")
         print(len(state.sol))
-        if len(state.sol) >= 2440:
-            print(len(rm))
-            print(test_answer(state.sol))
+
+        # If we have found a better solution, set it to best_state
+        # and reset the amount to shake the solution by
+        # Else increment level by the step parameter
         if state.value > best_state.value:
             best_state = state
             level = 1
@@ -166,10 +182,11 @@ def ils(rm, file, arguments):
                 level = best_state.value-1
         if time.time() > timeout:
             break
-    return best_state
+    return best_state, initial_state
 
 
 def test_answer(ans):
+    """ Tests the given solution to check if it is valid """
     edges = []
     ks = []
 
@@ -188,28 +205,32 @@ def test_answer(ans):
 
 
 if __name__ == '__main__':
+    # argvs: 
+    # 1 -> arquivo a ser escrito
+    # 2 -> seed
+    # 3 -> limite do random
+    # 4 -> passo de nivel
+
     if len(sys.argv) != 5:
         print(f'Número incorreto de argumentos. Esperava 5 e recebeu {len(sys.argv)}')
         exit(1)
     random.seed(int(sys.argv[2]))
-    arguments = sys.argv[3:]
+    arguments = sys.argv[3:5]
 
     filepath = input('Digite o nome do arquivo: ')
 
     rm = open_rm(filepath)
-    s = ils(rm, filepath, arguments)
+    final, initial = ils(rm, filepath, arguments)
 
     print('Melhor solução encontrada: \n')
-    print(s.sol)
-    print(s.value)
+    print(final.sol)
+    print(final.value)
 
     with open(sys.argv[1], "w") as f:
-        f.write(str(s.value) + '\n')
-        for i in s.sol:
-            f.write(str(i) + '\n')
-
-    # with open("answers_ils.txt", "a") as f:
-    #     f.write('*'*12)
-    #     f.write(sys.argv[1] + '\n')
-    #     f.write(str(s.value) + '\n')
-    #     f.write(str(test_answer(s.sol)) + '\n')
+        f.write(str(initial.value) + '\n')
+        f.write(str(final.value) + '\n')
+        f.write('[')
+        for i in range(final.value - 1):
+            f.write(str(final.sol[i]) + ',')
+        f.write(str(final.sol[i+1]))
+        f.write(']')
