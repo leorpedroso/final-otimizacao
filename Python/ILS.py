@@ -159,7 +159,7 @@ def ils(rm, file, arguments):
     step = int(arguments[1])
     
     # Execution time used is 10 minutes
-    timeout = time.time() + 10
+    timeout = time.time() + 10*60
 
     while(iterations != 0):
         iterations -= 1
